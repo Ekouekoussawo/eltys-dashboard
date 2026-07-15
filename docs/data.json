@@ -1,1 +1,164 @@
-{"date": "2026-07-15", "mode": "demo", "ventes": {"ca_jour_ttc": 1052166, "ca_jour_ht": 891666, "nb_ventes": 26, "ca_mois_ttc": 24199818, "ca_annee_ttc": 213589698, "panier_moyen": 40468, "top_articles": [{"article": "Tricycle ELTYS", "ca": 166483}, {"article": "Sucre 50kg", "ca": 280119}, {"article": "Huile 5L", "ca": 58309}, {"article": "Eau 1.5L x12", "ca": 378792}, {"article": "Savon 10pcs", "ca": 109517}], "par_point_vente": [{"pv": "Boutique Centre", "ca": 262149}, {"pv": "Depot Lome", "ca": 424592}, {"pv": "Point Kara", "ca": 365425}]}, "tresorerie": {"caisse": 303650, "banque": 6479036, "entrees_jour": 992359, "sorties_jour": 742585, "alerte": false}, "clients": {"impaye_total": 6343860, "nb_impayes": 4, "top_impayes": [{"client": "Colgate Togo", "montant": 1529284, "echeance": "2026-06-17"}, {"client": "Quincaillerie GOE", "montant": 1370595, "echeance": "2026-05-29"}, {"client": "Ets AGBO", "montant": 1050483, "echeance": "2026-05-23"}, {"client": "Menuiserie KOFFI", "montant": 2393498, "echeance": "2026-07-10"}], "concentration": 73.9}, "stock": {"valeur_stock": 13834279, "nb_references": 197, "stock_lent": [{"article": "Huile 5L", "stock": 98, "valeur": 1999374, "jours": 178}, {"article": "Ciment 50kg", "stock": 164, "valeur": 1967230, "jours": 339}, {"article": "Tricycle ELTYS", "stock": 48, "valeur": 1101213, "jours": 136}, {"article": "Colgate 200g", "stock": 211, "valeur": 1922612, "jours": 141}], "ruptures": [{"article": "Savon 10pcs"}, {"article": "Huile 5L"}]}, "alerts": [{"niveau": "orange", "titre": "Creances impayees", "detail": "4 factures impayees, total 6 343 860 FCFA."}, {"niveau": "orange", "titre": "Dependance clients", "detail": "73.9% du CA sur les 3 plus gros clients (risque de concentration)."}, {"niveau": "orange", "titre": "Stock lent / immobilise", "detail": "4 references sans vente depuis >90j, soit 6 990 429 FCFA immobilises."}, {"niveau": "rouge", "titre": "Rupture de stock", "detail": "Article en rupture : Savon 10pcs."}, {"niveau": "rouge", "titre": "Rupture de stock", "detail": "Article en rupture : Huile 5L."}], "health_score": 36, "ai": {"resume": "Bonjour. Tresorerie dispo : 6 782 686 FCFA (caisse 303 650 FCFA, banque 6 479 036 FCFA). Chiffre d'affaires du jour : 1 052 166 FCFA sur 26 ventes (panier moyen 40 468 FCFA). CA cumule mois : 24 199 818 FCFA ; annee : 213 589 698 FCFA. Creances impayees : 6 343 860 FCFA (4 factures). Concentration : top 3 clients = 73.9% du CA. Valeur de stock : 13 834 279 FCFA sur 197 references. Stock lent : 4 refs. Ruptures : 2 refs.", "recommandations": ["A surveiller - Creances impayees : 4 factures impayees, total 6 343 860 FCFA.", "A surveiller - Dependance clients : 73.9% du CA sur les 3 plus gros clients (risque de concentration).", "A surveiller - Stock lent / immobilise : 4 references sans vente depuis >90j, soit 6 990 429 FCFA immobilises.", "Action urgente - Rupture de stock : Article en rupture : Savon 10pcs.", "Action urgente - Rupture de stock : Article en rupture : Huile 5L.", "Negociez les conditions d'achat des articles a forte rotation pour ameliorer la marge.", "Lancez une promotion ciblee sur le stock lent pour desimmobiliser la tresorerie.", "Diversifiez la base clients pour reduire la concentration au-dela de 60%."], "veille": "Veille concurrentielle non disponible sans IA. Conseils generaux : comparez vos prix et delais avec les distributeurs de Lome et de la sous-region (Cotonou, Accra).", "ia_used": false, "error": "401 Client Error: Unauthorized for url: https://models.inference.ai.azure.com/chat/completions"}}
+{
+  "date": "2026-07-15",
+  "mode": "demo",
+  "ventes": {
+    "ca_jour_ttc": 1052166,
+    "ca_jour_ht": 891666,
+    "nb_ventes": 26,
+    "ca_mois_ttc": 24199818,
+    "ca_annee_ttc": 213589698,
+    "panier_moyen": 40468,
+    "top_articles": [
+      {
+        "article": "Tricycle ELTYS",
+        "ca": 166483
+      },
+      {
+        "article": "Sucre 50kg",
+        "ca": 280119
+      },
+      {
+        "article": "Huile 5L",
+        "ca": 58309
+      },
+      {
+        "article": "Eau 1.5L x12",
+        "ca": 378792
+      },
+      {
+        "article": "Savon 10pcs",
+        "ca": 109517
+      }
+    ],
+    "par_point_vente": [
+      {
+        "pv": "Boutique Centre",
+        "ca": 262149
+      },
+      {
+        "pv": "Depot Lome",
+        "ca": 424592
+      },
+      {
+        "pv": "Point Kara",
+        "ca": 365425
+      }
+    ]
+  },
+  "tresorerie": {
+    "caisse": 303650,
+    "banque": 6479036,
+    "entrees_jour": 992359,
+    "sorties_jour": 742585,
+    "alerte": false
+  },
+  "clients": {
+    "impaye_total": 6343860,
+    "nb_impayes": 4,
+    "top_impayes": [
+      {
+        "client": "Colgate Togo",
+        "montant": 1529284,
+        "echeance": "2026-06-17"
+      },
+      {
+        "client": "Quincaillerie GOE",
+        "montant": 1370595,
+        "echeance": "2026-05-29"
+      },
+      {
+        "client": "Ets AGBO",
+        "montant": 1050483,
+        "echeance": "2026-05-23"
+      },
+      {
+        "client": "Menuiserie KOFFI",
+        "montant": 2393498,
+        "echeance": "2026-07-10"
+      }
+    ],
+    "concentration": 73.9
+  },
+  "stock": {
+    "valeur_stock": 13834279,
+    "nb_references": 197,
+    "stock_lent": [
+      {
+        "article": "Huile 5L",
+        "stock": 98,
+        "valeur": 1999374,
+        "jours": 178
+      },
+      {
+        "article": "Ciment 50kg",
+        "stock": 164,
+        "valeur": 1967230,
+        "jours": 339
+      },
+      {
+        "article": "Tricycle ELTYS",
+        "stock": 48,
+        "valeur": 1101213,
+        "jours": 136
+      },
+      {
+        "article": "Colgate 200g",
+        "stock": 211,
+        "valeur": 1922612,
+        "jours": 141
+      }
+    ],
+    "ruptures": [
+      {
+        "article": "Savon 10pcs"
+      },
+      {
+        "article": "Huile 5L"
+      }
+    ]
+  },
+  "alerts": [
+    {
+      "niveau": "orange",
+      "titre": "Creances impayees",
+      "detail": "4 factures impayees, total 6 343 860 FCFA."
+    },
+    {
+      "niveau": "orange",
+      "titre": "Dependance clients",
+      "detail": "73.9% du CA sur les 3 plus gros clients (risque de concentration)."
+    },
+    {
+      "niveau": "orange",
+      "titre": "Stock lent / immobilise",
+      "detail": "4 references sans vente depuis >90j, soit 6 990 429 FCFA immobilises."
+    },
+    {
+      "niveau": "rouge",
+      "titre": "Rupture de stock",
+      "detail": "Article en rupture : Savon 10pcs."
+    },
+    {
+      "niveau": "rouge",
+      "titre": "Rupture de stock",
+      "detail": "Article en rupture : Huile 5L."
+    }
+  ],
+  "health_score": 36,
+  "ai": {
+    "resume": "Bonjour. Tresorerie dispo : 6 782 686 FCFA (caisse 303 650 FCFA, banque 6 479 036 FCFA). Chiffre d'affaires du jour : 1 052 166 FCFA sur 26 ventes (panier moyen 40 468 FCFA). CA cumule mois : 24 199 818 FCFA ; annee : 213 589 698 FCFA. Creances impayees : 6 343 860 FCFA (4 factures). Concentration : top 3 clients = 73.9% du CA. Valeur de stock : 13 834 279 FCFA sur 197 references. Stock lent : 4 refs. Ruptures : 2 refs.",
+    "recommandations": [
+      "A surveiller - Creances impayees : 4 factures impayees, total 6 343 860 FCFA.",
+      "A surveiller - Dependance clients : 73.9% du CA sur les 3 plus gros clients (risque de concentration).",
+      "A surveiller - Stock lent / immobilise : 4 references sans vente depuis >90j, soit 6 990 429 FCFA immobilises.",
+      "Action urgente - Rupture de stock : Article en rupture : Savon 10pcs.",
+      "Action urgente - Rupture de stock : Article en rupture : Huile 5L.",
+      "Negociez les conditions d'achat des articles a forte rotation pour ameliorer la marge.",
+      "Lancez une promotion ciblee sur le stock lent pour desimmobiliser la tresorerie.",
+      "Diversifiez la base clients pour reduire la concentration au-dela de 60%."
+    ],
+    "veille": "Veille concurrentielle non disponible sans IA. Conseils generaux : comparez vos prix et delais avec les distributeurs de Lome et de la sous-region (Cotonou, Accra).",
+    "ia_used": false,
+    "error": "401 Client Error: Unauthorized for url: https://models.inference.ai.azure.com/chat/completions"
+  }
+}
