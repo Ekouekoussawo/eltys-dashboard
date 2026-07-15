@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELTYS SARLU - Tableau de bord quotidien</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --txt:#e2e8f0; --accent:#22c55e; --warn:#f59e0b; --bad:#ef4444; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--txt); }
+  .wrap { max-width:900px; margin:0 auto; padding:16px; }
+  header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  h1 { font-size:1.3rem; margin:0; }
+  .date { opacity:.7; font-size:.9rem; }
+  .score { font-size:.8rem; padding:4px 10px; border-radius:20px; background:var(--card); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:16px 0; }
+  .card { background:var(--card); border-radius:14px; padding:14px; }
+  .card .k { font-size:.75rem; opacity:.7; }
+  .card .v { font-size:1.25rem; font-weight:700; margin-top:4px; }
+  .section { background:var(--card); border-radius:14px; padding:14px; margin:12px 0; }
+  .section h2 { font-size:1rem; margin:0 0 10px; }
+  .alert { border-left:4px solid var(--accent); padding:8px 12px; margin:8px 0; background:#0b1220; border-radius:8px; }
+  .alert.rouge { border-color:var(--bad); }
+  .alert.orange { border-color:var(--warn); }
+  .alert .t { font-weight:700; }
+  .alert .d { font-size:.85rem; opacity:.85; }
+  ul.rec { margin:6px 0; padding-left:18px; }
+  ul.rec li { margin:6px 0; }
+  .chart-box { position:relative; height:220px; }
+  #gate { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:50; }
+  #gate .box { background:var(--card); padding:24px; border-radius:14px; text-align:center; width:300px; }
+  #gate input { width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none; }
+  #gate button { width:100%; padding:10px; border:none; border-radius:8px; background:var(--accent); color:#04210f; font-weight:700; cursor:pointer; }
+  .err { color:var(--bad); font-size:.8rem; min-height:1em; }
+  footer { opacity:.5; font-size:.75rem; text-align:center; margin:20px 0; }
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="box">
+    <h2>Acces directeur general</h2>
+    <input id="pw" type="password" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')check()">
+    <button onclick="check()">Entrer</button>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+<div id="app" class="wrap" style="display:none">
+  <header>
+    <div><h1>ELTYS SARLU</h1><div class="date">Tableau de bord du 2026-07-15</div></div>
+    <div class="score">Sante 36/100</div>
+  </header>
+  <div class="grid" id="kpis"></div>
+  <div class="section"><h2>Chiffre d'affaires par point de vente</h2><div class="chart-box"><canvas id="pv"></canvas></div></div>
+  <div class="section"><h2>Top articles (CA du jour)</h2><div class="chart-box"><canvas id="art"></canvas></div></div>
+  <div class="section"><h2>Alertes</h2><div id="alerts"></div></div>
+  <div class="section"><h2>Resume IA</h2><p id="resume"></p></div>
+  <div class="section"><h2>Recommandations de rentabilite</h2><ul class="rec" id="recs"></ul></div>
+  <div class="section"><h2>Veille concurrentielle</h2><p id="veille"></p></div>
+  <footer>Genere automatiquement depuis SAGE Saarii - demo</footer>
+</div>
+<script>
+const DATA = {"company": "ELTYS SARLU", "date": "2026-07-15", "ventes": {"ca_jour_ttc": 1052166, "ca_jour_ht": 891666, "nb_ventes": 26, "ca_mois_ttc": 24199818, "ca_annee_ttc": 213589698, "panier_moyen": 40468, "top_articles": [{"article": "Tricycle ELTYS", "ca": 166483}, {"article": "Sucre 50kg", "ca": 280119}, {"article": "Huile 5L", "ca": 58309}, {"article": "Eau 1.5L x12", "ca": 378792}, {"article": "Savon 10pcs", "ca": 109517}], "par_point_vente": [{"pv": "Boutique Centre", "ca": 262149}, {"pv": "Depot Lome", "ca": 424592}, {"pv": "Point Kara", "ca": 365425}]}, "tresorerie": {"caisse": 303650, "banque": 6479036, "entrees_jour": 992359, "sorties_jour": 742585, "alerte": false}, "clients": {"impaye_total": 6343860, "nb_impayes": 4, "top_impayes": [{"client": "Colgate Togo", "montant": 1529284, "echeance": "2026-06-17"}, {"client": "Quincaillerie GOE", "montant": 1370595, "echeance": "2026-05-29"}, {"client": "Ets AGBO", "montant": 1050483, "echeance": "2026-05-23"}, {"client": "Menuiserie KOFFI", "montant": 2393498, "echeance": "2026-07-10"}], "concentration": 73.9}, "stock": {"valeur_stock": 13834279, "nb_references": 197, "stock_lent": [{"article": "Huile 5L", "stock": 98, "valeur": 1999374, "jours": 178}, {"article": "Ciment 50kg", "stock": 164, "valeur": 1967230, "jours": 339}, {"article": "Tricycle ELTYS", "stock": 48, "valeur": 1101213, "jours": 136}, {"article": "Colgate 200g", "stock": 211, "valeur": 1922612, "jours": 141}], "ruptures": [{"article": "Savon 10pcs"}, {"article": "Huile 5L"}]}, "alerts": [{"niveau": "orange", "titre": "Creances impayees", "detail": "4 factures impayees, total 6 343 860 FCFA."}, {"niveau": "orange", "titre": "Dependance clients", "detail": "73.9% du CA sur les 3 plus gros clients (risque de concentration)."}, {"niveau": "orange", "titre": "Stock lent / immobilise", "detail": "4 references sans vente depuis >90j, soit 6 990 429 FCFA immobilises."}, {"niveau": "rouge", "titre": "Rupture de stock", "detail": "Article en rupture : Savon 10pcs."}, {"niveau": "rouge", "titre": "Rupture de stock", "detail": "Article en rupture : Huile 5L."}], "ai": {"resume": "Bonjour. Tresorerie dispo : 6 782 686 FCFA (caisse 303 650 FCFA, banque 6 479 036 FCFA). Chiffre d'affaires du jour : 1 052 166 FCFA sur 26 ventes (panier moyen 40 468 FCFA). CA cumule mois : 24 199 818 FCFA ; annee : 213 589 698 FCFA. Creances impayees : 6 343 860 FCFA (4 factures). Concentration : top 3 clients = 73.9% du CA. Valeur de stock : 13 834 279 FCFA sur 197 references. Stock lent : 4 refs. Ruptures : 2 refs.", "recommandations": ["A surveiller - Creances impayees : 4 factures impayees, total 6 343 860 FCFA.", "A surveiller - Dependance clients : 73.9% du CA sur les 3 plus gros clients (risque de concentration).", "A surveiller - Stock lent / immobilise : 4 references sans vente depuis >90j, soit 6 990 429 FCFA immobilises.", "Action urgente - Rupture de stock : Article en rupture : Savon 10pcs.", "Action urgente - Rupture de stock : Article en rupture : Huile 5L.", "Negociez les conditions d'achat des articles a forte rotation pour ameliorer la marge.", "Lancez une promotion ciblee sur le stock lent pour desimmobiliser la tresorerie.", "Diversifiez la base clients pour reduire la concentration au-dela de 60%."], "veille": "Veille concurrentielle non disponible sans IA. Conseils generaux : comparez vos prix et delais avec les distributeurs de Lome et de la sous-region (Cotonou, Accra)."}, "mode": "demo"};
+const EXPECTED = "cbb546be127a28186736a0fed7dd00549c03af3b9d2e267ddb5d0500fbadb846";
+async function sha256(s){ const b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+async function check(){ const v=document.getElementById('pw').value; const h=await sha256(v); if(h===EXPECTED){ document.getElementById('gate').style.display='none'; document.getElementById('app').style.display='block'; render(); } else { document.getElementById('err').textContent='Mot de passe incorrect'; } }
+const fmt = n => (n==null?'0':Number(n).toLocaleString('fr-FR'))+' FCFA';
+function render(){
+  const d=DATA; const v=d.ventes, t=d.tresorerie, c=d.clients, s=d.stock;
+  const kpis=[
+    ['CA du jour', fmt(v.ca_jour_ttc)],
+    ['CA du mois', fmt(v.ca_mois_ttc)],
+    ['Tresorerie dispo', fmt(t.caisse+t.banque)],
+    ['Creances impayees', fmt(c.impaye_total)],
+    ['Valeur stock', fmt(s.valeur_stock)],
+    ['Ventes du jour', v.nb_ventes+'']
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(k=>`<div class="card"><div class="k">${k[0]}</div><div class="v">${k[1]}</div></div>`).join('');
+  if(d.alerts && d.alerts.length){ document.getElementById('alerts').innerHTML = d.alerts.map(a=>`<div class="alert ${a.niveau}"><div class="t">${a.titre}</div><div class="d">${a.detail}</div></div>`).join(''); }
+  else { document.getElementById('alerts').innerHTML='<div class="alert"><div class="t">Aucune alerte majeure</div></div>'; }
+  document.getElementById('resume').textContent = d.ai.resume || '';
+  document.getElementById('veille').textContent = d.ai.veille || '';
+  document.getElementById('recs').innerHTML = (d.ai.recommandations||[]).map(r=>`<li>${r}</li>`).join('');
+  new Chart(document.getElementById('pv'), {type:'bar', data:{labels:(v.par_point_vente||[]).map(x=>x.pv), datasets:[{data:(v.par_point_vente||[]).map(x=>x.ca), backgroundColor:'#22c55e'}]}, options:{plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>fmt(v)}}}}});
+  new Chart(document.getElementById('art'), {type:'bar', data:{labels:(v.top_articles||[]).map(x=>x.article), datasets:[{data:(v.top_articles||[]).map(x=>x.ca), backgroundColor:'#38bdf8'}]}, options:{indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{ticks:{callback:v=>fmt(v)}}}}});
+}
+</script>
+</body>
+</html>
